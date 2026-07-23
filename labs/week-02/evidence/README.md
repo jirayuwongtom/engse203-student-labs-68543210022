@@ -22,4 +22,4 @@ npm run check :
 ![alt text](<Screenshot 2026-07-23 204929.png>)
 
 npm run build :
-[text](README.md) ![text](<Screenshot 2026-07-23 205011.png>)
+![alt text](<Screenshot 2026-07-23 205011.png>)
