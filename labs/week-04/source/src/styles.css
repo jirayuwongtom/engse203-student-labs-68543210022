@@ -48,4 +48,38 @@ form > button, .filter-active { border: 0; border-radius: .6rem; padding: .65rem
 }
 
 /* TODO LAB4-R12: เพิ่ม focus-visible, aria-invalid และ state/badge styles */
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+input[aria-invalid="true"], 
+select[aria-invalid="true"], 
+textarea[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 0.75rem;
+}
 
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  border-radius: 999px;
+  margin-right: 0.5rem;
+  text-transform: uppercase;
+}
+
+.badge.pending { background-color: #fff3cd; color: #b93815; }
+.badge.in-progress { background-color: #e0f2fe; color: var(--blue); }
+.badge.completed { background-color: #dcfce7; color: #166534; }
+
+.badge.normal { background-color: #f1f5f9; color: var(--muted); border: 1px solid var(--border); }
+.badge.urgent { background-color: #feeceb; color: var(--danger); border: 1px solid var(--danger); }
