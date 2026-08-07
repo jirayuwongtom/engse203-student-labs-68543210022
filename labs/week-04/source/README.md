@@ -9,8 +9,8 @@
 ## URLs
 
 - Repository: https://github.com/jirayuwongtom/engse203-student-labs-68543210022
-- Pull Request: -
-- GitHub Pages: -
+- Pull Request: https://github.com/jirayuwongtom/engse203-student-labs-68543210022/pull/4
+- GitHub Pages: https://jirayuwongtom.github.io/engse203-student-labs-68543210022/labs/week-04/
 
 ## Component Tree
 
@@ -58,7 +58,7 @@ Callback (Event Flow) : เหตุการณ์จะไหลจากล�
 | TC-09 Mobile | เมื่อปรับขนาดหน้าจอเป็น 375px เลย์เอาต์จะเปลี่ยนเป็น 1 คอลัมน์ อ่านง่าย และไม่มีการเลื่อนแนวนอน (No horizontal scroll) | Pass | [evidence/mobile-375.png](../evidence/mobile-375.png) |
 | TC-10 Keyboard | สามารถกดปุ่ม Tab เพื่อเลื่อน Focus ไปตามช่องต่างๆ ได้ โดยมีกรอบสีฟ้า (Outline) แสดงชัดเจน และกด Enter เพื่อ Submit ได้ | Pass | [evidence/desktop6.png](../evidence/desktop6.png) |
 | TC-11 Build | รันคำสั่ง npm run build ผ่านโดยไม่มี Error และสามารถรัน npm run preview เพื่อดูผลลัพธ์ได้ปกติ | Pass | - |
-| TC-12 Pages | เมื่อนำลิงก์ GitHub Pages ไปเปิดในหน้าต่าง Incognito ตัวเว็บและ CSS สามารถโหลดมาแสดงผลได้สมบูรณ์ ไม่มีแจ้งเตือน 404 Not Found | Pass | - |
+| TC-12 Pages | เมื่อนำลิงก์ GitHub Pages ไปเปิดในหน้าต่าง Incognito ตัวเว็บและ CSS สามารถโหลดมาแสดงผลได้สมบูรณ์ ไม่มีแจ้งเตือน 404 Not Found | Pass | [evidence/pages-incognito.png](../evidence/pages-incognito.png) |
 
 ## Screenshots
 
