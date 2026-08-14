@@ -1,24 +1,24 @@
 # ENGSE203 LAB05 — Student Test Report
 
-**ชื่อ–รหัส:** TODO  
-**OS / Browser / Node:** TODO  
+**ชื่อ–รหัส:** จิรายุ วงศ์ต่อม - 68543210022-8  
+**OS / Browser / Node:** [Windows 11 [WSL] / Chrome / v22.23.1]  
 **Branch / Commit:** `lab/week-05` / TODO
 
 กรอก Actual result จากการรันจริง ใช้ `PASS`, `FAIL` หรือ `NOT RUN` และอ้างหลักฐานแบบ relative path
 
 | Test ID | Preconditions / procedure summary | Actual result | Status | Evidence / Notes |
 |---|---|---|---|---|
-| TC-L5-01 | เปิด `#/` | TODO | NOT RUN | |
+| TC-L5-01 | เปิด `#/` | TODO | NOT RUN |  |
 | TC-L5-02 | ใช้ navigation 3 รายการ | TODO | NOT RUN | |
 | TC-L5-03 | เปิด/refresh `#/requests/new` | TODO | NOT RUN | |
-| TC-L5-04 | เปิด `#/requests/REQ-001` | TODO | NOT RUN | `images/route-detail-found.png` |
+| TC-L5-04 | เปิด `#/requests/REQ-001` | TODO | PASS | [images/route-detail-found.png](../evidence/images/route-detail-found.png) |
 | TC-L5-05 | เปิด `#/requests/REQ-999` | TODO | NOT RUN | |
-| TC-L5-06 | เปิด `#/unknown` | TODO | NOT RUN | `images/route-not-found.png` |
+| TC-L5-06 | เปิด `#/unknown` | TODO | PASS | [images/route-not-found.png](../evidence/images/route-not-found.png) |
 | TC-L5-07 | ลบ LAB05 key แล้วเปิด Dashboard | TODO | NOT RUN | |
-| TC-L5-08 | สังเกตช่วง latency | TODO | NOT RUN | `images/state-loading.png` |
-| TC-L5-09 | เปิด `#/?scenario=error` | TODO | NOT RUN | `images/state-error-retry.png` |
+| TC-L5-08 | สังเกตช่วง latency | TODO | PASS | [images/state-loading.png](../evidence/images/state-loading.png) |
+| TC-L5-09 | เปิด `#/?scenario=error` | TODO | PASS | [images/state-error-retry.png](../evidence/images/state-error-retry.png) |
 | TC-L5-10 | กด Retry | TODO | NOT RUN | |
-| TC-L5-11 | เปิด `#/?scenario=empty` | TODO | NOT RUN | `images/state-empty.png` |
+| TC-L5-11 | เปิด `#/?scenario=empty` | TODO | PASS | [images/state-empty.png](../evidence/images/state-empty.png) |
 | TC-L5-12 | รัน public checker | TODO | NOT RUN | command summary |
 | TC-L5-13 | submit form ผิด validation | TODO | NOT RUN | |
 | TC-L5-14 | เพิ่ม valid request แล้ว refresh | TODO | NOT RUN | `images/persistence-add-refresh.png` |
