@@ -56,9 +56,16 @@ export function readStoredRequests() {
   const rawValue = localStorage.getItem(STORAGE_KEY);
   if (rawValue === null) return { status: 'missing' };
 
-  try {
+    try {
     const envelope = JSON.parse(rawValue);
-    // TODO 5B-A2: ตรวจ schemaVersion และ validateRequests ให้ครบใน CP04b
+    if (
+      !envelope
+      || envelope.schemaVersion !== SCHEMA_VERSION
+      || !validateRequests(envelope.requests)
+    ) {
+      return { status: 'invalid', reason: 'รูปแบบหรือเวอร์ชันข้อมูลไม่ถูกต้อง' };
+    }
+
     return { status: 'valid', requests: structuredClone(envelope.requests) };
   } catch {
     return { status: 'invalid', reason: 'ข้อมูลที่บันทึกไว้ไม่ใช่ JSON ที่อ่านได้' };
