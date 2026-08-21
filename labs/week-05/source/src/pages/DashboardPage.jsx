@@ -19,20 +19,23 @@ function DashboardPage() {
   const [notice, setNotice] = useState('');
 
   useEffect(() => {
+    let ignore = false;
     setLoadState('loading');
     setErrorMessage('');
     setNotice('');
 
     getRequests({ scenario, onRecovery: setNotice })
       .then((data) => {
+        if (ignore) return;
         setRequests(data);
         setLoadState('success');
       })
       .catch((error) => {
+        if (ignore) return;
         setErrorMessage(error instanceof Error ? error.message : 'เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ');
         setLoadState('error');
       });
-    // TODO 5B: เพิ่ม cleanup guard เพื่อกัน stale update
+      return () => { ignore = true; };
   }, [scenario, reloadKey]);
 
   const summary = useMemo(() => ({
