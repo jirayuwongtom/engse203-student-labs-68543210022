@@ -30,8 +30,8 @@
 | TC-L5-20 | viewport 375px ทุก page | บนหน้าจอ 375px การแสดงผลจัดเรียงได้ดี ไม่มีแถบเลื่อนแนวนอน ปุ่มและข้อความแสดงผลอยู่ในกรอบที่กดใช้งานได้ปกติ | PASS | [images/responsive-375.png](../evidence/images/responsive-375.png) |
 | TC-L5-21 | keyboard only | สามารถใช้คีย์บอร์ดเลื่อนโฟกัสไปตามปุ่ม, ฟอร์ม, และลิงก์ต่างๆ ได้ครบถ้วน พร้อมมีกรอบไฮไลต์บอกตำแหน่งการโฟกัสชัดเจน | PASS | [images/keyboard-focus.png](../evidence/images/keyboard-focus.png) |
 | TC-L5-22 | checker/build/preview | build สำเร็จโดยไม่มี Error และใน preview สามารถ refresh ทุกลิงก์ได้ปกติโดยไม่เกิด 404 | PASS | ✓ 41 modules transformed.<br>✓ built in 263ms|
-| TC-L5-23 | Pages Incognito + hash refresh | ในโหมดไม่ระบุตัวตน หน้าเว็บโหลดและ refresh ได้ปกติ ไม่มีหน้า 404 มีข้อมูลตั้งต้น 3 รายการโผล่มาโดยไม่มีข้อความกู้ข้อมูล | PASS | [images/pages-incognito.png](../evidence/images/pages-incognito.png) + URL : https://jirayuwongtom.github.io/engse203-student-labs-68543210022/labs/week-05/|
-| TC-L5-24 | merged PR + tag | ทำการเปิด Pull Request เข้า main สำเร็จ และ push tag lab-05-submission-v1 ไปยัง repository เรียบร้อยแล้ว | PASS | https://github.com/jirayuwongtom/engse203-student-labs-68543210022/pull/5 + commit/tag |
+| TC-L5-23 | Pages Incognito + hash refresh | ในโหมดไม่ระบุตัวตน หน้าเว็บโหลดและ refresh ได้ปกติ ไม่มีหน้า 404 มีข้อมูลตั้งต้น 3 รายการโผล่มาโดยไม่มีข้อความกู้ข้อมูล | PASS | [images/pages-incognito.png](../evidence/images/pages-incognito.png)|
+| TC-L5-24 | merged PR + tag | ทำการเปิด Pull Request เข้า main สำเร็จ และ push tag lab-05-submission-v1 ไปยัง repository เรียบร้อยแล้ว | PASS | PR_URL : https://github.com/jirayuwongtom/engse203-student-labs-68543210022/pull/5 <br> commit/tag : https://github.com/jirayuwongtom/engse203-student-labs-68543210022/releases/tag/lab-05-submission-v1 |
 
 ## Rerun log
 
