@@ -66,11 +66,11 @@
   {
     "week": "week-05",
     "title": "React Routing Data Fetching Mini App",
-    "status": "ready",
+    "status": "submitted",
     "sourceOrigin": "migrated-repository",
     "originalRepoUrl": "",
     "originalCommit": "",
-    "pullRequestUrl": "",
+    "pullRequestUrl": "https://github.com/jirayuwongtom/engse203-student-labs-68543210022/pull/5",
     "submissionTag": "lab-05-submission-v1",
     "testStatus": "pass",
     "notes": "",
