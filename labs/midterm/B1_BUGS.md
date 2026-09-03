@@ -35,8 +35,8 @@
 | 1 | Console เตือนสีเหลืองเรื่องรายการ (list) ที่แผงสรุป | SummaryPanel.jsx : 12 | เขียน `<article className="summary-card">`ไม่ครบขาดการ prop key ทำให้ React ระบุตัวตนของแต่ละ element สำหรับการเปรียบเทียบใน Virtual DOM ไม่ได้| เพิ่ม `key={key}` |
 | 2 | ตัวเลข "เสร็จสิ้น" ในแผงสรุปไม่ตรงกับที่เห็นจริง | DashboardPage.jsx : 50 | โค้ดของ `request.status` ของ completed ซ้ำกับ inProgress | เปลี่ยนเป็น `request.status === 'completed').length` |
 | 3 | กดตัวกรองสถานะใด ๆ แล้วผลไม่เปลี่ยน (เหมือนกรองไม่ทำงาน) | DashboardPage.jsx : 55 | ใน `requests.filter` มีการเขียนให้ดึงเฉพาะ `'pending'` มาทำให้เวลากดไปสถานะอื่นก็จะแสดงของ `'pending'` อย่างเดียว| เปลี่ยนคำว่า `'pending'` เป็นตัวแปร `statusFilter` |
-| 4 | เปลี่ยน URL `REQ-101` → `REQ-102` แล้วข้อมูลไม่เปลี่ยน | RequestDetailPage.jsx : 28 | ลืมใส่ตัวแปร ID เข้าไปในวงเล็บเหลี่ยมของ useEffect | ใส่ `requestId` เข้าไปใน []  |
-| 5 | กด "ลบ" แล้วการ์ดหาย แต่ตัวเลขในแผงสรุปไม่ลด |  |  |  |
+| 4 | เปลี่ยน URL `REQ-101` → `REQ-102` แล้วข้อมูลไม่เปลี่ยน | RequestDetailPage.jsx : 28 | ลืมใส่ตัวแปร ID เข้าไปในวงเล็บเหลี่ยมของ useEffect | ใส่ `requestId` เข้าไปใน [] ของตัวแปร useEffect |
+| 5 | กด "ลบ" แล้วการ์ดหาย แต่ตัวเลขในแผงสรุปไม่ลด | DashboardPage.jsx : 51 | ลืมใส่ตัวแปร `requests` เข้าไปในวงเล็บเหลี่ยมของ useMemo | ใส่ `requests` เข้าไปใน [] ของตัวแปร useMemo |
 | 6 | กด "ลบ" แล้วหน้าพัง/ว่างเปล่า |  |  |  |
 
 ---
