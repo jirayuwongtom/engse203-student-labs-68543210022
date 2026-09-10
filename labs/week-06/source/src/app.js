@@ -19,6 +19,9 @@ export function createApp() {
    * TODO W06-A2 (CP01) · route ทดสอบว่าเซิร์ฟเวอร์ทำงาน
    *   GET / → res.json({ message: 'Campus Service API is running', version: '1.0.0' })
    */
+  app.get('/', (req, res) => {
+  res.json({ message: 'Campus Service API is running', version: '1.0.0' });
+  });
 
   /**
    * TODO W06-A3 (CP02) · เชื่อม requestRoutes เข้ากับ path /api/requests
