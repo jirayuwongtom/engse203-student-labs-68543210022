@@ -18,14 +18,9 @@ export function getRequest(req, res) {
   res.status(200).json(found);
 }
 
-/**
- * TODO W06-C3 (CP04) · POST /api/requests
- * - validateRequest middleware ตรวจ body มาให้แล้ว ตรงนี้เชื่อ req.body ได้เลย
- * - เรียก service.create() แล้วตอบ 201 พร้อมคำร้องที่สร้าง
- * ⚠ POST สำเร็จตอบ 201 ไม่ใช่ 200
- */
 export function createRequest(req, res) {
-  throw new Error('TODO W06-C3: createRequest');
+  const created = service.create(req.body);
+  res.status(201).json(created);
 }
 
 /**
