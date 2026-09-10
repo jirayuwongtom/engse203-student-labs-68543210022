@@ -58,11 +58,8 @@ export function updateStatus(id, status) {
   throw new Error('TODO W06-S4: updateStatus');
 }
 
-/**
- * TODO W06-S5 (CP05) · ลบคำร้องตามรหัส
- * - คืน true ถ้าลบได้จริง · คืน false ถ้าไม่พบรหัสนั้น
- * - ใช้ .filter() สร้าง array ใหม่ อย่าแก้ array เดิม
- */
 export function remove(id) {
-  throw new Error('TODO W06-S5: remove');
+  const before = requests.length;
+  requests = requests.filter((r) => r.id !== id);
+  return requests.length < before;
 }

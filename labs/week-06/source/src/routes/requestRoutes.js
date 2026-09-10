@@ -7,12 +7,12 @@ const router = Router();
 /**
  * TODO W06-R1 (CP02, CP04, CP05) · ประกาศ route ทั้งหมด
  *   PUT    /:id           → controller.updateRequestStatus     (⭐ Challenge)
- *   DELETE /:id           → controller.deleteRequest
  * ⚠ route ที่เจาะจง (path คงที่) ต้องเขียนก่อน route ที่มี :id เสมอ
  * คำใบ้: ใส่ middleware คั่นได้ เช่น router.post('/', validateRequest, controller.createRequest)
  */
 router.get('/', controller.listRequests);
 router.get('/:id', controller.getRequest);
 router.post('/', validateRequest, controller.createRequest);
+router.delete('/:id', controller.deleteRequest);
 
 export default router;

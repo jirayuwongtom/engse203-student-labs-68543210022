@@ -32,10 +32,10 @@ export function updateRequestStatus(req, res) {
   throw new Error('TODO W06-C4: updateRequestStatus');
 }
 
-/**
- * TODO W06-C5 (CP05) · DELETE /api/requests/:id
- * - ไม่พบ → 404 · ลบสำเร็จ → 204 (ไม่มีข้อมูลส่งกลับ ใช้ res.status(204).end())
- */
 export function deleteRequest(req, res) {
-  throw new Error('TODO W06-C5: deleteRequest');
+  const removed = service.remove(req.params.id);
+  if (!removed) {
+    return res.status(404).json({ error: `ไม่พบคำร้องรหัส ${req.params.id}` });
+  }
+  res.status(204).end();
 }
