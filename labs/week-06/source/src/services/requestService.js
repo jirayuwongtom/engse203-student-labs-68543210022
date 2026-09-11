@@ -59,12 +59,12 @@ export async function create(input) {
   return structuredClone(newRequest);
 }
 
-/**
- * TODO W06-S4 (⭐ Challenge) · เปลี่ยนสถานะคำร้อง
- * - ไม่พบคืน null · พบแล้วเปลี่ยน status และคืนสำเนา
- */
-export function updateStatus(id, status) {
-  throw new Error('TODO W06-S4: updateStatus');
+export async function updateStatus(id, status) {
+  const request = requests.find((r) => r.id === id);
+  if (!request) return null;
+  request.status = status;
+  await persist();
+  return structuredClone(request);
 }
 
 export async function remove(id) {

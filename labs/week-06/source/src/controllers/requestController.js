@@ -23,13 +23,17 @@ export async function createRequest(req, res) {
   res.status(201).json(created);
 }
 
-/**
- * TODO W06-C4 (⭐ Challenge) · PUT /api/requests/:id
- * - status ที่รับได้: 'pending' | 'in-progress' | 'completed'
- * - status ไม่ถูกต้อง → 400 · ไม่พบคำร้อง → 404 · สำเร็จ → 200
- */
-export function updateRequestStatus(req, res) {
-  throw new Error('TODO W06-C4: updateRequestStatus');
+export async function updateRequestStatus(req, res) {
+  const validStatuses = ['pending', 'in-progress', 'completed'];
+  const {status} = req.body;
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({error: 'สถานะไม่ถูกต้อง อนุญาตแค่ pending, in-progress, หรือ completed'});
+  }
+  const updated = await service.updateStatus(req.params.id , status);
+  if (!updated) {
+    return res.status(404).json({error: `ไม่พบคำร้องรหัส ${req.params.id}`});
+  }
+  res.status(200).json(updated);
 }
 
 export async function deleteRequest(req, res) {
