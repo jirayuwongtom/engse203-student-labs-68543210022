@@ -23,9 +23,6 @@ export async function loadSeed() {
   return requests;
 }
 
-/**
- * TODO W06-S1b (⭐ Challenge) · ถ้ามี options.status ให้กรองเฉพาะสถานะนั้น
- */
 export function findAll({ status } = {}) {
   if (!status) return structuredClone(requests);
   return structuredClone(requests.filter((r) => r.status === status));
