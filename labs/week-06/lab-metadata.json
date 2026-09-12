@@ -1,12 +1,12 @@
 {
   "week": "week-06",
   "title": "Node.js / Express API Foundation",
-  "status": "draft",
+  "status": "ready",
   "sourceOrigin": "course-starter",
   "originalRepoUrl": "",
   "originalCommit": "",
   "pullRequestUrl": "",
   "submissionTag": "",
-  "testStatus": "not-tested",
+  "testStatus": "pass",
   "notes": ""
 }
