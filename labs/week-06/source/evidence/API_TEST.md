@@ -6,23 +6,23 @@
 
 | # | Method | Path | ส่งอะไร | status ที่ควรได้ | status ที่ได้จริง | ผ่าน |
 |---|---|---|---|---|---|---|
-| 1 | GET | `/` | - | 200 |200 OK | [x] |
-| 2 | GET | `/api/requests` | - | 200 |200 OK | [x] |
-| 3 | GET | `/api/requests/REQ-001` | - | 200 | 200 OK | [x] |
-| 4 | GET | `/api/requests/REQ-999` | - | 404 | 404 Not Found | [x] |
-| 5 | POST | `/api/requests` | ข้อมูลครบถูกต้อง | 201 | 201 Created | [x] |
-| 6 | POST | `/api/requests` | `{"requesterName":"x"}` | 400 | 400 Bad Request | [x] |
-| 7 | DELETE | `/api/requests/REQ-003` | - | 204 | 204 No Content | [x] |
-| 8 | DELETE | `/api/requests/REQ-999` | - | 404 | 404 Not Found | [x] |
-| 9 | GET | `/api/unknown` | - | 404 | 404 Not Found | [x] |
+| 1 | GET | `/` | - | 200 |200 OK | ✅ |
+| 2 | GET | `/api/requests` | - | 200 |200 OK | ✅ |
+| 3 | GET | `/api/requests/REQ-001` | - | 200 | 200 OK | ✅ |
+| 4 | GET | `/api/requests/REQ-999` | - | 404 | 404 Not Found | ✅ |
+| 5 | POST | `/api/requests` | ข้อมูลครบถูกต้อง | 201 | 201 Created | ✅ |
+| 6 | POST | `/api/requests` | `{"requesterName":"x"}` | 400 | 400 Bad Request | ✅ |
+| 7 | DELETE | `/api/requests/REQ-003` | - | 204 | 204 No Content | ✅ |
+| 8 | DELETE | `/api/requests/REQ-999` | - | 404 | 404 Not Found | ✅ |
+| 9 | GET | `/api/unknown` | - | 404 | 404 Not Found | ✅ |
 
 ## ⭐ Challenge (ถ้าทำ)
 
 | # | Method | Path | status ที่ควรได้ | ที่ได้จริง | ผ่าน |
 |---|---|---|---|---|---|
-| 10 | GET | `/api/requests?status=pending` | 200 (กรองแล้ว) | 200 OK (กรองแล้ว) | [x] |
-| 11 | PUT | `/api/requests/REQ-001` + `{"status":"in-progress"}` | 200 | 200 OK (REQ-001 มี status เป็น in-progress) | [x] |
-| 12 | PUT | `/api/requests/REQ-001` + `{"status":"มั่ว"}` | 400 | 400 Bad Request | [x] |
+| 10 | GET | `/api/requests?status=pending` | 200 (กรองแล้ว) | 200 OK (กรองแล้ว) | ✅ |
+| 11 | PUT | `/api/requests/REQ-001` + `{"status":"in-progress"}` | 200 | 200 OK (REQ-001 มี status เป็น in-progress) | ✅ |
+| 12 | PUT | `/api/requests/REQ-001` + `{"status":"มั่ว"}` | 400 | 400 Bad Request | ✅ |
 
 ## ทดสอบว่าข้อมูลอยู่ถาวร (CP08)
 
