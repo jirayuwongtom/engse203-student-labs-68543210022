@@ -6,21 +6,34 @@ function readText(value) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
-export function validateRequest(req, res, next) {
-  const input = req.body;
-  const errors = [];
+function validateSchema(schema) {
+  return (req, res, next) => {
+    const input = req.body;
+    if (!input || typeof input !== 'object') {
+      return res.status(400).json({ error: 'ต้องส่งข้อมูลคำร้องมาด้วย' });
+    }
 
-  if (!input || typeof input !== 'object') {
-    return res.status(400).json({ error: 'ต้องส่งข้อมูลคำร้องมาด้วย' });
-  }
-  if (readText(input.requesterName).length < 2) errors.push('ชื่อผู้แจ้งต้องมีอย่างน้อย 2 ตัวอักษร');
-  if (!REQUEST_TYPES.includes(input.requestType)) errors.push('ประเภทคำร้องไม่ถูกต้อง');
-  if (!readText(input.location)) errors.push('กรุณาระบุสถานที่');
-  if (readText(input.details).length < 10) errors.push('รายละเอียดต้องมีอย่างน้อย 10 ตัวอักษร');
-  if (!PRIORITIES.includes(input.priority)) errors.push('ความเร่งด่วนต้องเป็น normal หรือ urgent');
-
-  if (errors.length > 0) {
+    const errors = [];
+    
+    for(const [field , validatorFn] of Object.entries(schema)) {
+      const errorMessage = validatorFn(input[field]);
+      if (errorMessage) {
+        errors.push(errorMessage);
+      }
+    }
+    if (errors.length > 0) {
     return res.status(400).json({ error: 'ข้อมูลคำร้องไม่ถูกต้อง', details: errors });
-  }
-  next();
+    }
+    next();
+  };
 }
+
+const requestSchema = {
+  requesterName : (v) => readText(v).length < 2 ? 'ชื่อผู้แจ้งต้องมีอย่างน้อย 2 ตัวอักษร' : null,
+  requestType : (v) => !REQUEST_TYPES.includes(v) ? 'ประเภทคำร้องไม่ถูกต้อง' : null,
+  location : (v) => !readText(v) ? 'กรุณาระบุสถานที่' : null,
+  details : (v) => readText(v).length < 10 ? 'รายละเอียดต้องมีอย่างน้อย 10 ตัวอักษร' : null,
+  priority : (v) => !PRIORITIES.includes (v) ? 'ความเร่งด่วนต้องเป็น normal หรือ urgent' : null
+};
+
+export const validateRequest = validateSchema(requestSchema);
