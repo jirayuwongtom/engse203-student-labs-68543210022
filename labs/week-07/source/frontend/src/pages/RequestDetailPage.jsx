@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import ErrorState from '../components/ErrorState.jsx';
 import LoadingState from '../components/LoadingState.jsx';
 import useManualReload from '../hooks/useManualReload.js';
-import { getRequestById } from '../services/requestService.js';
+import { getRequestById, updateRequestStatus } from '../services/requestService.js';
 
 function RequestDetailPage() {
   const { requestId } = useParams();
@@ -11,6 +11,7 @@ function RequestDetailPage() {
   const [request, setRequest] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [reloadKey, reload] = useManualReload();
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -27,6 +28,18 @@ function RequestDetailPage() {
     return () => { ignore = true; };
   }, [requestId, reloadKey]);
 
+  async function handleChangeStatus(nextStatus) {
+    setUpdating(true);
+    try {
+      const updated = await updateRequestStatus(request.id, nextStatus);
+      setRequest(updated);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setUpdating(false);
+    }
+  }
+  
   return (
     <section data-testid="page-request-detail">
       <div className="page-heading"><div><p className="eyebrow dark">DYNAMIC ROUTE</p><h1>รายละเอียดคำร้อง</h1><p>Request ID: <code>{requestId}</code></p></div></div>
@@ -39,6 +52,19 @@ function RequestDetailPage() {
         <article className="panel detail-card">
           <h2>{request.requestType}</h2>
           <dl><div><dt>ID</dt><dd>{request.id}</dd></div><div><dt>ผู้แจ้ง</dt><dd>{request.requesterName}</dd></div><div><dt>สถานที่</dt><dd>{request.location}</dd></div><div><dt>รายละเอียด</dt><dd>{request.details}</dd></div><div><dt>ความเร่งด่วน</dt><dd>{request.priority}</dd></div><div><dt>สถานะ</dt><dd>{request.status}</dd></div></dl>
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '1rem' }}>
+            {request.status === 'pending' && (
+              <button className="button primary"onClick={() => handleChangeStatus('in-progress')} disabled={updating}>
+                {updating ? 'กำลังอัปเดต...' : 'รับเรื่อง (In Progress)'}
+              </button>
+            )} 
+
+            {request.status === 'in-progress' && (
+              <button className="button primary" onClick={() => handleChangeStatus('completed')} disabled={updating}>
+                {updating ? 'กำลังอัปเดต...' : 'ทำงานเสร็จสิ้น (Completed)'}
+              </button>
+            )}
+          </div>
           <Link to="/">กลับ Dashboard</Link>
         </article>
       )}

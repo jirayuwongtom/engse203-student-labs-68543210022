@@ -32,12 +32,11 @@ export async function addRequest(requestInput) {
   return apiFetch('/api/requests', { method: 'POST', body: JSON.stringify(requestInput) });
 }
 
-/**
- * TODO W07-F6 (🏠 CP13) · PUT /api/requests/:id เปลี่ยนสถานะ
- * body: { status }
- */
 export async function updateRequestStatus(requestId, status) {
-  throw new Error('TODO W07-F6: updateRequestStatus');
+  return apiFetch(`/api/requests/${encodeURIComponent(requestId)}`, {
+    method: 'PUT',
+    body: JSON.stringify({ status }),
+  });
 }
 
 export async function deleteRequest(requestId) {
