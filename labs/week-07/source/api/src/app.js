@@ -3,17 +3,13 @@ import { config } from './config.js';
 import requestRoutes from './routes/requestRoutes.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
 import cors from 'cors';
+import morgan from 'morgan';
 
 export function createApp() {
   const app = express();
   
-  /**
-   * TODO W07-A2 (🏠 CP14) · เปลี่ยน logger เองเป็น morgan
-   *   dev  → morgan('dev')       อ่านง่าย มีสี
-   *   prod → morgan('combined')  ละเอียด เหมาะเก็บ log
-   * ใช้ config.isProduction ตัดสิน
-   */
-
+  app.use(morgan(config.isProduction ? 'combined' : 'dev'));
+  
   // ต้องอยู่บนสุด ก่อน middleware และ route ทั้งหมด
   app.use(cors({ origin: config.corsOrigin }));
 
