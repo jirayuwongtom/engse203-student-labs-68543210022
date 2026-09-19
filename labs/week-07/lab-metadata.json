@@ -1,12 +1,12 @@
 {
   "week": "week-07",
   "title": "RESTful API, Validation & Error Handling",
-  "status": "draft",
+  "status": "ready",
   "sourceOrigin": "course-starter",
   "originalRepoUrl": "",
   "originalCommit": "",
   "pullRequestUrl": "",
   "submissionTag": "",
-  "testStatus": "not-tested",
+  "testStatus": "pass",
   "notes": ""
 }
