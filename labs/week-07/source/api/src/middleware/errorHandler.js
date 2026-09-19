@@ -8,6 +8,10 @@ export class AppError extends Error {
   }
 }
 
+export function asyncHandler(fn) {
+  return (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+}
+
 export function errorHandler(err, req, res, next) {
   const status = err.status ?? 500;
 
