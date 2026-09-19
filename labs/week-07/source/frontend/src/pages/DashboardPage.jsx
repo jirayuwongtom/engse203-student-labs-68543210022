@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, resolvePath, useSearchParams } from 'react-router-dom';
 import ErrorState from '../components/ErrorState.jsx';
 import FilterBar from '../components/FilterBar.jsx';
 import LoadingState from '../components/LoadingState.jsx';
@@ -24,18 +24,42 @@ function DashboardPage() {
     setErrorMessage('');
     setNotice('');
 
-    getRequests({
-      scenario,
-      onRecovery: (message) => { if (!ignore) setNotice(message); },
-    }).then((data) => {
-      if (ignore) return;
-      setRequests(data);
-      setLoadState('success');
-    }).catch((error) => {
-      if (ignore) return;
-      setErrorMessage(error instanceof Error ? error.message : 'เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ');
-      setLoadState('error');
-    });
+    async function fetchData() {
+      let attempts = 0;
+      const maxRetries = 4;
+
+      while (attempts < maxRetries) {
+        try {
+          const data = await getRequests({
+            scenario, onRecovery: (message) => {
+              if (!ignore) setNotice(message); 
+            },
+          });
+
+          if (!ignore) {
+            setRequests(data);
+            setLoadState('success');
+          }
+          return;
+        } catch (error) {
+          if (ignore) return;
+
+          if (error.status ===0 || error.status >= 500) {
+            attempts++;
+            if (attempts < maxRetries) {
+              setNotice(`ติดต่อเซิร์ฟเวอร์ไม่ได้ กำลังลองใหม่ครั้งที่ ${attempts}`);
+              await new Promise(resolve => setTimeout(resolve , 1000 * attempts));
+              continue;
+            }
+          }
+
+          setErrorMessage(error instanceof Error ? error.message : 'เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ');
+          setLoadState('error');
+        }
+      }
+    }
+
+    fetchData();
 
     return () => { ignore = true; };
   }, [scenario, reloadKey]);
