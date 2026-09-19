@@ -32,10 +32,52 @@ const validRequest = {
  * รันด้วย: npm test
  * ตัวอย่างโครง (ลบคอมเมนต์นี้แล้วเขียนจริง)
  */
-describe('GET /api/requests', () => {
-  test('คืนรายการทั้งหมด พร้อม status 200', async () => {
-    // const res = await request(app).get('/api/requests');
-    // assert.equal(res.status, 200);
-    assert.ok(true, 'ยังไม่ได้เขียน test — ดู TODO W07-TEST');
+describe('API test', () => {
+
+  describe('GET /api/requests', () => {
+    test('คืนรายการทั้งหมด พร้อม status 200', async () => {
+      const res = await request(app).get('/api/requests');
+      assert.equal(res.status, 200);
+      assert.ok(Array.isArray(res.body));
+    });
   });
+
+    describe('GET /api/requests/:id', () => {
+    test('กรณีพบข้อมูลคำร้อง พร้อม status 200', async () => {
+      const res = await request(app).get('/api/requests/REQ-001');
+      assert.equal(res.status, 200);
+      assert.ok(res.body.id , 'REQ-001');
+    });
+
+    test('กรณีไม่พบข้อมูลคำร้อง พร้อม status 404', async () => {
+      const res = await request(app).get('/api/requests/REQ-999');
+      assert.equal(res.status, 404);
+      assert.ok(res.status, 404);
+    });
+  });
+
+  describe('POST /api/requests', () => {
+    test('ข้อมูลถูกต้อง พร้อม status 201 และ status เป็น pending', async () => {
+      const res = await request(app).post('/api/requests').send(validRequest);
+      assert.equal(res.status, 201);
+      assert.equal(res.body.status, 'pending');
+      assert.ok(res.body.id , 'REQ-');
+    });
+
+    test('ข้อมูลไม่ครบ พร้อม status 400' , async () => {
+      const invalidReq = { ...validRequest , requesterName: '' };
+      const res = await request(app).post('/api/requests').send(invalidReq);
+      assert.equal(res.status , 400);
+    });
+  });
+
+  describe('CORS', () => {
+    test('CORS header ตอบ origin ที่อนุญาต', async () => {
+      const res = await request(app)
+        .get('/api/requests')
+        .set('Origin', 'http://localhost:5173');
+      assert.equal(res.headers['access-control-allow-origin'], 'http://localhost:5173');
+    });
+  });
+  
 });
