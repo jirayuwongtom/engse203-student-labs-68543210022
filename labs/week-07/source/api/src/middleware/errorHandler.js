@@ -1,6 +1,13 @@
 /** จับ error ที่หลุดมาจากทุก route — ต้องมี 4 พารามิเตอร์ Express ถึงจะรู้ว่าเป็น error handler */
 import { config } from '../config.js';
 
+export class AppError extends Error {
+  constructor(message, status = 500) {
+    super(message);
+    this.status = status;
+  }
+}
+
 export function errorHandler(err, req, res, next) {
   const status = err.status ?? 500;
 
