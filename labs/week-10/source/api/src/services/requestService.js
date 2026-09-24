@@ -81,13 +81,16 @@ export function create(input) {
 }
 
 export function updateStatus(id, status) {
-  /** TODO W10-6 (CP30) · UPDATE requests SET status = ? WHERE id = ? · ไม่พบคืน null */
-  throw new Error('TODO W10-6: updateStatus');
+  const result = db.prepare('UPDATE requests SET status = ? WHERE id = ?')
+                   .run(status, id);
+  return result.changes ? findById(id) : null;
 }
 
 export function remove(id) {
-  /** TODO W10-7 (CP30) · DELETE FROM requests WHERE id = ? · ไม่พบคืน null */
-  throw new Error('TODO W10-7: remove');
+  const target = findById(id);      // ① หาก่อน
+  if (!target) return null;         // ② ไม่พบ → null
+  db.prepare('DELETE FROM requests WHERE id = ?').run(id);
+  return target;                    // ③ คืนของที่ลบ
 }
 
 
