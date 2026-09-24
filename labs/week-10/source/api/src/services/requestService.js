@@ -12,14 +12,18 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const API_ROOT = path.resolve(HERE, '../..');
 const DB_FILE = process.env.DB_FILE ?? path.join(API_ROOT, 'data', 'campus.db');
 const SCHEMA_FILE = path.join(API_ROOT, 'data', 'schema.sql');
+const SELECT_SHAPE = `
+  SELECT r.id,
+         u.name          AS requesterName,
+         r.request_type  AS requestType,
+         r.location,
+         r.details,
+         r.priority,
+         r.status
+  FROM requests r
+  JOIN users u ON u.id = r.requester_id`;
 
 export async function loadSeed() {
-  /**
-   *
-   * TODO W10-2 (CP27) · ⚠ path ต้องอ้างจากตำแหน่งไฟล์นี้ ไม่ใช่จากที่รันคำสั่ง
-   *   ใช้ fileURLToPath(import.meta.url) — ไม่งั้น dev กับ checker หาไฟล์คนละที่
-   */
-
   db = new DatabaseSync(DB_FILE);
   db.exec('PRAGMA foreign_keys = ON');   // ⚠ ต้องสั่งทุกครั้ง
 
@@ -34,19 +38,13 @@ export async function loadSeed() {
 }
 
 export function findAll({ status } = {}) {
-  /**
-   * TODO W10-3 (CP28) · เปลี่ยนเป็น SELECT จากฐานข้อมูล
-   *   - ใช้ JOIN กับตาราง users เพื่อคืน requesterName (ไม่ใช่ requester_id)
-   *   - ตั้งชื่อคอลัมน์ด้วย AS ให้ตรงกับที่ frontend ใช้
-   *   - ถ้ามี status ให้เติม WHERE r.status = ?
-   *   คำใบ้: คัดลอก query จาก queries.sql ที่ทำสัปดาห์ที่แล้วมาปรับ
-   */
-  return db.prepare('SELECT * FROM requests').all();
+  return status
+    ? db.prepare(`${SELECT_SHAPE} WHERE r.status = ? ORDER BY r.id`).all(status)
+    : db.prepare(`${SELECT_SHAPE} ORDER BY r.id`).all();
 }
 
 export function findById(id) {
-  /** TODO W10-4 (CP28) · SELECT ... WHERE r.id = ?  · ไม่พบให้คืน null */
-  return requests.find((r) => r.id === id) ?? null;
+  return db.prepare(`${SELECT_SHAPE} WHERE r.id = ?`).get(id) ?? null;
 }
 
 export function create(input) {
@@ -68,3 +66,5 @@ export function remove(id) {
   /** TODO W10-7 (CP30) · DELETE FROM requests WHERE id = ? · ไม่พบคืน null */
   throw new Error('TODO W10-7: remove');
 }
+
+
