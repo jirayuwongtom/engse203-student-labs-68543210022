@@ -1,38 +1,35 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { DatabaseSync } from 'node:sqlite';
+import { readFileSync, existsSync } from 'node:fs';
 
-/**
- * Week 10 — เปลี่ยน service จากอ่านไฟล์ JSON เป็นฐานข้อมูล SQLite
- *
- * ตอนนี้ยังเป็นเวอร์ชัน Week 07 (อ่านไฟล์ JSON) อยู่
- * งานของสัปดาห์นี้คือเปลี่ยนให้ใช้ node:sqlite
- *
- * ⚠ กฎเหล็ก: signature ของทุกฟังก์ชันต้องเหมือนเดิมทุกตัว
- *   → controller และ frontend จะได้ไม่ต้องแก้เลย
- */
+let db;
 
-// ── ของเดิม Week 07 (อ่านไฟล์ JSON) — จะถูกแทนที่ ──
+// ตำแหน่งของ "ไฟล์นี้" ไม่ใช่ตำแหน่งที่รันคำสั่ง
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const DATA = path.resolve(HERE, '../..', 'data', 'requests.json');
-let requests = [];
+const API_ROOT = path.resolve(HERE, '../..');
+const DB_FILE = process.env.DB_FILE ?? path.join(API_ROOT, 'data', 'campus.db');
+const SCHEMA_FILE = path.join(API_ROOT, 'data', 'schema.sql');
 
 export async function loadSeed() {
   /**
-   * TODO W10-1 (CP26) · เปิดฐานข้อมูลด้วย node:sqlite
-   *   import { DatabaseSync } from 'node:sqlite'
-   *   - เปิดไฟล์ campus.db (จากสัปดาห์ที่ 9)
-   *   - สั่ง PRAGMA foreign_keys = ON  ⚠ สำคัญมาก
-   *   - ถ้ายังไม่มีตาราง ให้สร้างจาก schema.sql
    *
    * TODO W10-2 (CP27) · ⚠ path ต้องอ้างจากตำแหน่งไฟล์นี้ ไม่ใช่จากที่รันคำสั่ง
    *   ใช้ fileURLToPath(import.meta.url) — ไม่งั้น dev กับ checker หาไฟล์คนละที่
    */
-  try {
-    requests = JSON.parse(await readFile(DATA, 'utf8'));
-  } catch {
-    requests = [];
+
+  db = new DatabaseSync(DB_FILE);
+  db.exec('PRAGMA foreign_keys = ON');   // ⚠ ต้องสั่งทุกครั้ง
+
+  // ถ้ายังไม่มีตาราง (ไฟล์ใหม่) ให้สร้างจาก schema.sql
+  const ready = db.prepare(
+    "SELECT COUNT(*) c FROM sqlite_master WHERE type='table' AND name='requests'"
+  ).get().c;
+  if (!ready && existsSync(SCHEMA_FILE)) {
+    db.exec(readFileSync(SCHEMA_FILE, 'utf8'));
   }
+  
 }
 
 export function findAll({ status } = {}) {
@@ -43,7 +40,7 @@ export function findAll({ status } = {}) {
    *   - ถ้ามี status ให้เติม WHERE r.status = ?
    *   คำใบ้: คัดลอก query จาก queries.sql ที่ทำสัปดาห์ที่แล้วมาปรับ
    */
-  return status ? requests.filter((r) => r.status === status) : requests;
+  return db.prepare('SELECT * FROM requests').all();
 }
 
 export function findById(id) {
