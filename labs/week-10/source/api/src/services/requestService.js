@@ -47,14 +47,37 @@ export function findById(id) {
   return db.prepare(`${SELECT_SHAPE} WHERE r.id = ?`).get(id) ?? null;
 }
 
+function resolveUserId(name) {
+  const found = db.prepare('SELECT id FROM users WHERE name = ?').get(name);
+  if (found) return found.id;          // มีแล้ว — ใช้ id เดิม ไม่สร้างซ้ำ
+
+  const slug = Date.now().toString(36);
+  return db.prepare('INSERT INTO users (name, department, email) VALUES (?,?,?)')
+           .run(name, 'ไม่ระบุ', `user-${slug}@rmutl.ac.th`).lastInsertRowid;
+}
+
+function nextId() {
+  const row = db.prepare(
+    "SELECT id FROM requests WHERE id LIKE 'REQ-%' ORDER BY id DESC LIMIT 1"
+  ).get();
+  const n = row ? Number(String(row.id).replace('REQ-', '')) + 1 : 1;
+  return `REQ-${String(n).padStart(3, '0')}`;
+}
+
 export function create(input) {
-  /**
-   * TODO W10-5 (CP29) · INSERT ลงฐานข้อมูล
-   *   ⚠ frontend ส่ง requesterName (ชื่อ) มา แต่ตารางเก็บ requester_id (ตัวเลข)
-   *   → ต้องหา id ของชื่อนั้นก่อน ถ้ายังไม่มีในระบบให้สร้าง user ใหม่
-   *   นี่คือ "หน้าที่ของ service" ที่พูดถึงในบทที่ 9 ของสัปดาห์ที่แล้ว
-   */
-  throw new Error('TODO W10-5: create');
+  const id = nextId();
+  db.prepare(
+    `INSERT INTO requests (id, requester_id, request_type, location, details, priority)
+     VALUES (?, ?, ?, ?, ?, ?)`
+  ).run(
+    id,
+    resolveUserId(input.requesterName.trim()),
+    input.requestType,
+    input.location.trim(),
+    input.details.trim(),
+    input.priority ?? 'normal'
+  );
+  return findById(id);   // คืนรูปแบบที่ frontend ต้องการ
 }
 
 export function updateStatus(id, status) {
