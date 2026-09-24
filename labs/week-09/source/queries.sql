@@ -14,7 +14,8 @@ ORDER BY id;
 -- ② คำร้องที่ยังไม่ได้ดำเนินการ (status = 'pending')
 SELECT id , location , details , status
 FROM requests
-WHERE status = 'pending';
+WHERE status = 'pending'
+ORDER BY id;
 
 -- ③ คำร้องเร่งด่วนที่ยังไม่เสร็จ — ใช้เงื่อนไข 2 ข้อพร้อมกัน
 SELECT *
@@ -27,13 +28,13 @@ FROM requests
 WHERE details LIKE '%เครื่อง%';
 
 -- ⑤ คำร้องพร้อมชื่อผู้แจ้ง  ← ต้องใช้ JOIN เพราะชื่ออยู่คนละตาราง
-SELECT r.id , u.name , r.request_type , r.details , r.status
+SELECT r.id , u.name AS requesterName , r.request_type , r.details , r.status
 FROM requests r
 JOIN users u 
 ON u.id = r.requester_id;
 
 -- ⑥ คำร้องเฉพาะของภาควิชาหนึ่ง  (JOIN + WHERE)
-SELECT r.id , u.name , u.department , r.details
+SELECT r.id , u.name AS requesterName , u.department , r.details
 FROM requests r
 JOIN users u
 ON u.id = r.requester_id
@@ -62,7 +63,8 @@ ORDER BY total DESC;
 -- ⑩ ใครแจ้งคำร้องมากที่สุด  (คำใบ้: LEFT JOIN เพื่อให้คนที่ยังไม่เคยแจ้งติดมาด้วย)
 SELECT u.name, u.department, COUNT(r.id) AS total
 FROM users u
-LEFT JOIN requests r ON r.requester_id = u.id
+LEFT JOIN requests r 
+ON r.requester_id = u.id
 GROUP BY u.id
 ORDER BY total DESC, u.name;
 
