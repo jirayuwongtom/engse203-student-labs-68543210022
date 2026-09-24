@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
 import { readFileSync, existsSync } from 'node:fs';
 
+
 let db;
 
 // ตำแหน่งของ "ไฟล์นี้" ไม่ใช่ตำแหน่งที่รันคำสั่ง
