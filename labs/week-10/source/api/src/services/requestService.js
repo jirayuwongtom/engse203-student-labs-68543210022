@@ -66,7 +66,9 @@ function nextId() {
 
 export function create(input) {
   const id = nextId();
+  db.exec('BEGIN');
   try {
+    const requesterId = resolveUserId(input.requesterName.trim());
     db.prepare(
       `INSERT INTO requests (id, requester_id, request_type, location, details, priority)
       VALUES (?, ?, ?, ?, ?, ?)`
@@ -78,7 +80,9 @@ export function create(input) {
       input.details.trim(),
       input.priority ?? 'normal'
     );
+    db.exec('COMMIT');
   } catch (err) {
+    db.exec('ROLLBACK');
     throw toAppError(err);
   }
   return findById(id);   // คืนรูปแบบที่ frontend ต้องการ
