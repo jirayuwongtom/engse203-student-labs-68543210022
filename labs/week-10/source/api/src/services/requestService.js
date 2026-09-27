@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
 import { readFileSync, existsSync } from 'node:fs';
-
+import { AppError } from '../middleware/errorHandler.js';
 
 let db;
 
@@ -25,7 +25,7 @@ const SELECT_SHAPE = `
 
 export async function loadSeed() {
   db = new DatabaseSync(DB_FILE);
-  db.exec('PRAGMA foreign_keys = ON');   // ⚠ ต้องสั่งทุกครั้ง
+  db.exec('PRAGMA foreign_keys = ON');   // ต้องสั่งทุกครั้ง
 
   // ถ้ายังไม่มีตาราง (ไฟล์ใหม่) ให้สร้างจาก schema.sql
   const ready = db.prepare(
@@ -66,24 +66,32 @@ function nextId() {
 
 export function create(input) {
   const id = nextId();
-  db.prepare(
-    `INSERT INTO requests (id, requester_id, request_type, location, details, priority)
-     VALUES (?, ?, ?, ?, ?, ?)`
-  ).run(
-    id,
-    resolveUserId(input.requesterName.trim()),
-    input.requestType,
-    input.location.trim(),
-    input.details.trim(),
-    input.priority ?? 'normal'
-  );
+  try {
+    db.prepare(
+      `INSERT INTO requests (id, requester_id, request_type, location, details, priority)
+      VALUES (?, ?, ?, ?, ?, ?)`
+    ).run(
+      id,
+      resolveUserId(input.requesterName.trim()),
+      input.requestType,
+      input.location.trim(),
+      input.details.trim(),
+      input.priority ?? 'normal'
+    );
+  } catch (err) {
+    throw toAppError(err);
+  }
   return findById(id);   // คืนรูปแบบที่ frontend ต้องการ
 }
 
 export function updateStatus(id, status) {
-  const result = db.prepare('UPDATE requests SET status = ? WHERE id = ?')
+  try {
+    const result = db.prepare('UPDATE requests SET status = ? WHERE id = ?')
                    .run(status, id);
-  return result.changes ? findById(id) : null;
+    return result.changes ? findById(id) : null;
+  } catch (err) {
+    throw toAppError(err);
+  }
 }
 
 export function remove(id) {
@@ -93,4 +101,10 @@ export function remove(id) {
   return target;                    // ③ คืนของที่ลบ
 }
 
-
+function toAppError(err) {
+  const m = err.message ?? '';
+  if (m.includes('FOREIGN KEY')) return new AppError('อ้างถึงข้อมูลที่ไม่มีอยู่จริง', 400);
+  if (m.includes('CHECK'))       return new AppError('ค่าที่ส่งมาไม่อยู่ในรายการที่กำหนด', 400);
+  if (m.includes('UNIQUE'))      return new AppError('ข้อมูลนี้มีอยู่แล้วในระบบ', 409);
+  return err;   // error อื่นปล่อยผ่าน → errorHandler ตอบ 500
+}
