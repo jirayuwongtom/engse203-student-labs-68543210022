@@ -70,3 +70,6 @@ INSERT INTO requests (id, requester_id, request_type, location, details, priorit
   ('REQ-006', 2, 'แจ้งซ่อม',          'ห้องปฏิบัติการ 401', 'ไฟในห้องกะพริบตลอดเวลา',          'normal', 'pending'),
   ('REQ-007', 2, 'แจ้งซ่อม',      'ห้องปฏิบัติการ 405',            'สายต่อจอเสีย',              'normal', 'pending'),
   ('REQ-008', 2, 'แจ้งซ่อม',             'ห้องน้ำชั้น 4',      'น้ำไม่ออก 2',            'urgent', 'pending');
+
+CREATE INDEX IF NOT EXISTS idx_requests_status ON requests(status);
+CREATE INDEX IF NOT EXISTS idx_requests_requester ON requests(requester_id);
