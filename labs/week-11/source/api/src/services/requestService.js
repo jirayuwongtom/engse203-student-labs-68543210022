@@ -48,12 +48,6 @@ export async function loadSeed() {
   }
 }
 
-
-/**
- * TODO W11-DBSTATUS (CP37) · คืนสถานะฐานข้อมูลให้ health check
- *   - ถ้ายังไม่เปิด db → { connected: false }
- *   - ถ้าเปิดได้ → { connected: true, driver: 'sqlite', tables: N }
- */
 /** สถานะฐานข้อมูล — ใช้โดย health check */
 export function getDbStatus() {
   try {
