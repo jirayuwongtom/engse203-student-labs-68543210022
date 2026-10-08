@@ -77,6 +77,17 @@ describe('POST /api/requests', () => {
     const ids = (await request(app).get('/api/requests')).body.map((x) => x.id);
     expect(new Set(ids).size).toBe(ids.length);
   });
+  test('สร้างคำร้องด้วยชื่อผู้ใช้ที่มีอยู่แล้วในระบบได้ (201)', async () => {
+    const r = await request(app).post('/api/requests').send({
+      requesterName: 'สมชาย ใจดี',
+      requestType: 'แจ้งซ่อม',
+      location: 'C3-301',
+      details: 'รายละเอียดยาวพอสมควรจริง',
+      priority: 'normal'
+    });
+    expect(r.status).toBe(201);
+    expect(r.body.requesterName).toBe('สมชาย ใจดี');
+  });
 });
 
 describe('PUT /api/requests/:id', () => {
@@ -123,5 +134,24 @@ describe('ข้อมูลผิดรูปแบบ', () => {
   });
 });
 
-// 🏫 TODO W12-DEBUG (CP47): regression test ของ bug จาก BUG_REPORTS.md
-//   เขียน test ที่ "ทำซ้ำอาการ" ก่อน → ต้อง fail → แก้โค้ด → test ผ่าน
+describe('GET /api/health', () => {
+  test('ตรวจสอบสถานะระบบได้ (200)', async () => {
+    const r = await request(app).get('/api/health');
+    expect(r.status).toBe(200);
+    expect(r.body).toHaveProperty('status', 'ok');
+  });
+});
+
+describe('Users API (/api/users)', () => {
+  test('ดูรายชื่อผู้ใช้ทั้งหมดได้ (200)', async () => {
+    const r = await request(app).get('/api/users');
+    expect(r.status).toBe(200);
+    expect(Array.isArray(r.body)).toBe(true);
+  });
+
+  test('ดูคำร้องของผู้ใช้เฉพาะบุคคลได้ (200)', async () => {
+    const r = await request(app).get('/api/users/1/requests');
+    expect(r.status).toBe(200);
+    expect(Array.isArray(r.body)).toBe(true);
+  });
+});
