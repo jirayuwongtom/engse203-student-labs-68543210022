@@ -32,8 +32,13 @@ async function parseError(response) {
 export async function apiFetch(path, options = {}) {
   let response;
   try {
+    const token = localStorage.getItem('token');
+    const headers = { 'Content-Type': 'application/json', ...options.headers };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
     response = await fetch(`${BASE_URL}${path}`, {
-      headers: { 'Content-Type': 'application/json', ...options.headers },
+      headers,
       ...options,
     });
   } catch {
