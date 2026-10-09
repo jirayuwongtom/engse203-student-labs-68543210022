@@ -79,7 +79,7 @@ export function getDbStatus() {
   try {
     if (!db) return { connected: false, reason: 'ยังไม่ได้เปิดฐานข้อมูล' };
     const n = db.prepare("SELECT COUNT(*) c FROM sqlite_master WHERE type='table'").get().c;
-    return { connected: true, driver, tables: n };
+    return { connected: true, driver: driver, tables: n };
   } catch (e) {
     return { connected: false, reason: e.message };
   }
