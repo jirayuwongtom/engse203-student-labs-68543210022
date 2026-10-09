@@ -1,12 +1,12 @@
 {
   "week": "week-12",
   "title": "Testing-Debugging",
-  "status": "ready",
-  "sourceOrigin": "course-starter",
+  "status": "submitted",
+  "sourceOrigin": "migrated-repository",
   "originalRepoUrl": "",
   "originalCommit": "",
-  "pullRequestUrl": "",
-  "submissionTag": "",
+  "pullRequestUrl": "https://github.com/jirayuwongtom/engse203-student-labs-68543210022/pull/11",
+  "submissionTag": "lab-12-submission-v1",
   "testStatus": "pass",
   "notes": ""
 }
