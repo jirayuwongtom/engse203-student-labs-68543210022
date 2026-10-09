@@ -23,7 +23,15 @@ export function createApp() {
 
   // ③ อ่าน JSON body
   app.use(express.json({ limit: '10kb' }));
-
+  app.use((req, res, next) => {
+    res.set({
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'Referrer-Policy': 'no-referrer'
+    });
+    next();
+  });
+  
   // ④ route ของ API — ทุกอย่างอยู่ใต้ /api
   app.get('/api', (req, res) => {
     res.json({ message: 'Campus Service API is running', version: '3.0.0' });
